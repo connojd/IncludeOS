@@ -66,6 +66,7 @@ read_linux_release() {
 RELEASE=$([ $SYSTEM = "Darwin" ] && echo `sw_vers -productVersion` || read_linux_release)
 
 [ "$RELEASE" = "neon" ] && RELEASE="ubuntu"
+[ "$RELEASE" = "antergos" ] && RELEASE="arch"
 
 check_os_support() {
     SYSTEM=$1
