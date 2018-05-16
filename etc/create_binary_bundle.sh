@@ -49,10 +49,10 @@ while getopts "h?y" opt; do
 done
 
 # Install build dependencies
-DEPS_BUILD="build-essential make nasm texinfo clang-$clang_version clang++-$clang_version"
-
-echo -e "\n\n >>> Trying to install prerequisites for *building* IncludeOS"
-echo -e  "        Packages: $DEPS_BUILD \n"
+#DEPS_BUILD="build-essential make nasm texinfo clang-$clang_version clang++-$clang_version"
+#
+#echo -e "\n\n >>> Trying to install prerequisites for *building* IncludeOS"
+#echo -e  "        Packages: $DEPS_BUILD \n"
 
 # NOTE: Addding  llvm 5.0 package sources, needed for Ubuntu 16.04 LTS can be done like so:
 # llvm_source_list=/etc/apt/sources.list.d/llvm.list
@@ -60,10 +60,10 @@ echo -e  "        Packages: $DEPS_BUILD \n"
 # sudo grep -q -F "$llvm_deb_entry" $llvm_source_list || sudo bash -c "echo \"$llvm_deb_entry\" >> $llvm_source_list"
 # wget -O - http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 
-if [ ! -z $do_packages ]; then
-  sudo apt-get update
-  sudo apt-get install -y $DEPS_BUILD
-fi
+#if [ ! -z $do_packages ]; then
+#  sudo apt-get update
+#  sudo apt-get install -y $DEPS_BUILD
+#fi
 
 
 # Print currently set install options
