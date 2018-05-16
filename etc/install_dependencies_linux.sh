@@ -75,102 +75,102 @@ function print_missing {
     "MISSING" $1
 }
 
-if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
-  print_header
-	for package in $ALL_DEPENDENCIES; do
-		dpkg-query -W $package > /dev/null 2>&1
-		if [ $? -eq 0 ]; then
-      print_installed $(dpkg-query -W $package)
-		else
-      print_missing $package
-			DEPENDENCIES="$DEPENDENCIES $package"
-		fi
-	done
-
-	# Check clang version
-	if [[ $(command -v clang-$CLANG_VERSION) ]]; then
-		INSTALLED_CLANG=1
-		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
-			printf "\n%s\n" "clang-$CLANG_VERSION -> INSTALLED"
-	   	fi
-	else
-		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
-			printf "\n%s\n" "clang-$CLANG_VERSION -> MISSING"
-		fi
-
-	fi
-
-	# Check if pip is installed
-	if pip --version > /dev/null 2>&1; then
-		INSTALLED_PIP=1
-		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
-			printf "\n%s\n" "python pip -> INSTALLED"
-		fi
-    print_header
-		for package in $PYTHON_DEPENDENCIES; do
-			pip show $package > /dev/null 2>&1
-			if [ $? -eq 0 ]; then
-				if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
-          print_installed $(pip list 2> /dev/null | grep $package)
-				fi
-			else
-				if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
-          print_missing $package
-					PYTHON_DEPS_TO_INSTALL="$PYTHON_DEPS_TO_INSTALL $package"
-				fi
-			fi
-		done
-	else
-		INSTALLED_PIP=0
-		DEPENDENCIES="$DEPENDENCIES python-pip"
-		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
-			printf "%s\n\n" "python pip -> MISSING"
-		fi
-	fi
-
-	# Exits if CHECK_ONLY is set, exit code 1 if there are packages to install
-	if [ $CHECK_ONLY -eq 1 ]; then
-		if [[ -z "$DEPENDENCIES" && -z "$PYTHON_DEPS_TO_INSTALL" && $INSTALLED_CLANG -eq 1 ]]; then
-			exit 0
-		else
-			exit 1
-		fi
-	fi
-else
-	DEPENDENCIES=$ALL_DEPENDENCIES
-fi
+#if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
+#  print_header
+#	for package in $ALL_DEPENDENCIES; do
+#		dpkg-query -W $package > /dev/null 2>&1
+#		if [ $? -eq 0 ]; then
+#      print_installed $(dpkg-query -W $package)
+#		else
+#      print_missing $package
+#			DEPENDENCIES="$DEPENDENCIES $package"
+#		fi
+#      done
+#
+#	# Check clang version
+#	if [[ $(command -v clang-$CLANG_VERSION) ]]; then
+#		INSTALLED_CLANG=1
+#		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
+#			printf "\n%s\n" "clang-$CLANG_VERSION -> INSTALLED"
+#	   	fi
+#	else
+#		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
+#			printf "\n%s\n" "clang-$CLANG_VERSION -> MISSING"
+#		fi
+#
+#	fi
+#
+#	# Check if pip is installed
+#	if pip --version > /dev/null 2>&1; then
+#		INSTALLED_PIP=1
+#		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
+#			printf "\n%s\n" "python pip -> INSTALLED"
+#		fi
+#    print_header
+#		for package in $PYTHON_DEPENDENCIES; do
+#			pip show $package > /dev/null 2>&1
+#			if [ $? -eq 0 ]; then
+#				if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
+#          print_installed $(pip list 2> /dev/null | grep $package)
+#				fi
+#			else
+#				if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
+#          print_missing $package
+#					PYTHON_DEPS_TO_INSTALL="$PYTHON_DEPS_TO_INSTALL $package"
+#				fi
+#			fi
+#		done
+#	else
+#		INSTALLED_PIP=0
+#		DEPENDENCIES="$DEPENDENCIES python-pip"
+#		if [ $PRINT_INSTALL_STATUS -eq 1 ]; then
+#			printf "%s\n\n" "python pip -> MISSING"
+#		fi
+#	fi
+#
+#	# Exits if CHECK_ONLY is set, exit code 1 if there are packages to install
+#	if [ $CHECK_ONLY -eq 1 ]; then
+#		if [[ -z "$DEPENDENCIES" && -z "$PYTHON_DEPS_TO_INSTALL" && $INSTALLED_CLANG -eq 1 ]]; then
+#			exit 0
+#		else
+#			exit 1
+#		fi
+#	fi
+#else
+#	DEPENDENCIES=$ALL_DEPENDENCIES
+#fi
 
 ############################################################
 # INSTALL MISSING PACKAGES:
 ############################################################
 
-echo ">>> Installing missing dependencies (requires sudo):"
+#echo ">>> Installing missing dependencies (requires sudo):"
+#
+#case $SYSTEM in
+#    "Darwin")
+#        exit 0;
+#        ;;
+#    "Linux")
+#        case $RELEASE in
+#            "debian"|"ubuntu"|"linuxmint"|"parrot")
+#                DEPENDENCIES="$DEPENDENCIES"
+#                sudo apt-get -qq update || exit 1
+#                sudo apt-get -qqy install $DEPENDENCIES > /dev/null || exit 1
+#                ;;
+#            "fedora")
+#                # Removes g++-multilib from dependencies
+#                DEPENDENCIES=${DEPENDENCIES%g++-multilib}
+#                DEPENDENCIES="$DEPENDENCIES clang glibc-devel.i686"
+#                sudo dnf install $DEPENDENCIES || exit 1
+#                ;;
+#            "arch")
+#                DEPENDENCIES="$DEPENDENCIES python2 python2-jsonschema python2-psutil"
+#                sudo pacman -Syyu
+#                sudo pacman -S --needed $DEPENDENCIES
+#                ;;
+#        esac
+#esac
 
-case $SYSTEM in
-    "Darwin")
-        exit 0;
-        ;;
-    "Linux")
-        case $RELEASE in
-            "debian"|"ubuntu"|"linuxmint"|"parrot")
-                DEPENDENCIES="$DEPENDENCIES"
-                sudo apt-get -qq update || exit 1
-                sudo apt-get -qqy install $DEPENDENCIES > /dev/null || exit 1
-                ;;
-            "fedora")
-                # Removes g++-multilib from dependencies
-                DEPENDENCIES=${DEPENDENCIES%g++-multilib}
-                DEPENDENCIES="$DEPENDENCIES clang glibc-devel.i686"
-                sudo dnf install $DEPENDENCIES || exit 1
-                ;;
-            "arch")
-                DEPENDENCIES="$DEPENDENCIES python2 python2-jsonschema python2-psutil"
-                sudo pacman -Syyu
-                sudo pacman -S --needed $DEPENDENCIES
-                ;;
-        esac
-esac
+#$INCLUDEOS_SRC/etc/install_clang_version.sh $CLANG_VERSION
 
-$INCLUDEOS_SRC/etc/install_clang_version.sh $CLANG_VERSION
-
-sudo -H pip -q install $PYTHON_DEPENDENCIES
+#sudo -H pip -q install $PYTHON_DEPENDENCIES
