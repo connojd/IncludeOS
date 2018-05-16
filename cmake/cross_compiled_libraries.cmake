@@ -32,8 +32,8 @@ if (WITH_SOLO5)
 ExternalProject_Add(solo5_repo
 	PREFIX precompiled
 	BUILD_IN_SOURCE 1
-	GIT_REPOSITORY https://github.com/solo5/solo5.git
-	GIT_TAG 2765e0f5f090c0b27a8d62a48285842236e7d20f
+	GIT_REPOSITORY https://github.com/connojd/solo5.git
+	GIT_TAG 344261fbc924034bec70d191e9bc7dc1fcc88745
 	CONFIGURE_COMMAND CC=gcc ./configure.sh
 	UPDATE_COMMAND ""
 	BUILD_COMMAND make

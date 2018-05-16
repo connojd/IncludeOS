@@ -13,7 +13,7 @@ set -e
 # Parent directory of where you want the IncludeOS libraries (i.e. IncludeOS_home)
 # $ export INCLUDEOS_PREFIX=parent/folder/for/IncludeOS/libraries i.e.
 
-: ${INCLUDEOS_SRC:=$HOME/IncludeOS}
+: ${INCLUDEOS_SRC:=$HOME/includeos}
 : ${INCLUDEOS_PREFIX:=/usr/local}
 : ${INCLUDEOS_ENABLE_TEST:=OFF}
 : ${num_jobs:="-j 4"}
