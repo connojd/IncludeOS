@@ -17,7 +17,7 @@ set(CMAKE_C_COMPILER_TARGET ${TRIPLE})
 
 message(STATUS "Target triple ${TRIPLE}")
 
-option(WITH_SOLO5 "Install with solo5 support" ON)
+option(WITH_SOLO5 "Install with solo5 support" OFF)
 
 set(CMAKE_TOOLCHAIN_FILE ${INCLUDEOS_ROOT}/cmake/elf-toolchain.cmake)
 
@@ -66,9 +66,9 @@ set(CAPABS "${CAPABS} -DNO_DEBUG=1 -DOS_TERMINATE_ON_CONTRACT_VIOLATION -D_LIBCP
 set(WARNS "-Wall -Wextra") # -Werror
 
 # configure options
-option(debug "Build with debugging symbols (OBS: Dramatically increases binary size)" OFF)
-option(debug-info "Build like \"all\" but with debugging output (i.e. the 'debug'-macro) enabled" OFF)
-option(debug-all "Build with debugging symbols + debugging output, i.e. \"debug\" + \"debug-info\"" OFF)
+option(debug "Build with debugging symbols (OBS: Dramatically increases binary size)" ON)
+option(debug-info "Build like \"all\" but with debugging output (i.e. the 'debug'-macro) enabled" ON)
+option(debug-all "Build with debugging symbols + debugging output, i.e. \"debug\" + \"debug-info\"" ON)
 option(minimal "Build for minimal size" OFF)
 option(stripped "reduce size" OFF)
 
@@ -201,61 +201,61 @@ if(examples)
   add_subdirectory(examples)
 endif(examples)
 
-option(tests "Build unit tests in /test and install lest test framework" OFF)
-option(lest "Install lest unittest headers" OFF)
+#option(tests "Build unit tests in /test and install lest test framework" OFF)
+#option(lest "Install lest unittest headers" OFF)
 
-if (lest OR tests)
-  init_submodule(test/lest)
-  install(DIRECTORY test/lest/include/lest DESTINATION ${CMAKE_INSTALL_PREFIX}/includeos/include)
-endif()
+#if (lest OR tests)
+#  init_submodule(test/lest)
+#  install(DIRECTORY test/lest/include/lest DESTINATION ${CMAKE_INSTALL_PREFIX}/includeos/include)
+#endif()
 
-if(tests)
-  enable_testing()
-  ExternalProject_Add(unittests
-    PREFIX unittests
-    SOURCE_DIR ${INCLUDEOS_ROOT}/test
-    BINARY_DIR unittests
-    CMAKE_ARGS -DINCLUDEOS_ROOT=${INCLUDEOS_ROOT} -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    )
-  #add_subdirectory(test)
-endif(tests)
+#if(tests)
+#  enable_testing()
+#  ExternalProject_Add(unittests
+#    PREFIX unittests
+#    SOURCE_DIR ${INCLUDEOS_ROOT}/test
+#    BINARY_DIR unittests
+#    CMAKE_ARGS -DINCLUDEOS_ROOT=${INCLUDEOS_ROOT} -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+#    )
+#  #add_subdirectory(test)
+#endif(tests)
 
 #
 # Libraries
 #
-option(libmana "Build and install mana web application framework library" ON)
-if(libmana)
-  add_subdirectory(lib/mana)
-endif(libmana)
+# option(libmana "Build and install mana web application framework library" ON)
+# if(libmana)
+#   add_subdirectory(lib/mana)
+# endif(libmana)
+#
+# option(libuplink "Build and install uplink" ON)
+# if(libuplink)
+#   set(libliveupdate ON) # dependent
+#   add_subdirectory(lib/uplink)
+# endif(libuplink)
+#
+# option(libmender "Build and install mender client" ON)
+# if(libmender)
+#   set(libliveupdate ON) # dependent
+#   add_subdirectory(lib/mender)
+# endif(libmender)
 
-option(libuplink "Build and install uplink" ON)
-if(libuplink)
-  set(libliveupdate ON) # dependent
-  add_subdirectory(lib/uplink)
-endif(libuplink)
+#option(libliveupdate "Build and install LiveUpdate" ON)
+#if(libliveupdate)
+#  add_subdirectory(lib/LiveUpdate)
+#endif(libliveupdate)
 
-option(libmender "Build and install mender client" ON)
-if(libmender)
-  set(libliveupdate ON) # dependent
-  add_subdirectory(lib/mender)
-endif(libmender)
-
-option(libliveupdate "Build and install LiveUpdate" ON)
-if(libliveupdate)
-  add_subdirectory(lib/LiveUpdate)
-endif(libliveupdate)
-
-option(libmicroLB "Build and install microLB" ON)
-if(libmicroLB)
-  add_subdirectory(lib/microLB)
-endif()
+# option(libmicroLB "Build and install microLB" ON)
+# if(libmicroLB)
+#   add_subdirectory(lib/microLB)
+# endif()
 
 
-option(libprotobuf "Build and install Google's protobuf runtime library" ON)
-if(libprotobuf)
-  init_submodule(lib/protobuf)
-  include(${INCLUDEOS_ROOT}/cmake/protobuf.cmake)
-endif(libprotobuf)
+#option(libprotobuf "Build and install Google's protobuf runtime library" ON)
+#if(libprotobuf)
+#  init_submodule(lib/protobuf)
+#  include(${INCLUDEOS_ROOT}/cmake/protobuf.cmake)
+#endif(libprotobuf)
 
 #
 # Installation
