@@ -6,11 +6,11 @@
 # ...There are probably nicer solutions, so please PR if you know them.
 
 # make LiveUpdate visible to drivers
-include_directories(${INCLUDEOS_ROOT}/lib/LiveUpdate)
+#include_directories(${INCLUDEOS_ROOT}/lib/LiveUpdate)
 
 # Simple stuff
 add_library(boot_logger STATIC bootlog.cpp)
-add_library(default_stdout STATIC "default_stdout.cpp")
+add_library(default_stdout STATIC default_stdout.cpp)
 
 add_library(ide_readwrite STATIC ide.cpp)
 set_target_properties(ide_readwrite PROPERTIES COMPILE_FLAGS "-DIDE_ENABLE_READ -DIDE_ENABLE_WRITE")
@@ -71,11 +71,11 @@ install(TARGETS
     vga_output vga_emergency
     DESTINATION includeos/${ARCH}/drivers)
 
-if(WITH_SOLO5)
-  add_library(solo5blk STATIC solo5blk.cpp)
-  add_dependencies(solo5blk PrecompiledLibraries)
-
-  add_library(solo5net STATIC solo5net.cpp)
-  add_dependencies(solo5net PrecompiledLibraries)
-  install(TARGETS solo5net solo5blk DESTINATION includeos/${ARCH}/drivers)
-endif(WITH_SOLO5)
+#if(WITH_SOLO5)
+#  add_library(solo5blk STATIC solo5blk.cpp)
+#  add_dependencies(solo5blk PrecompiledLibraries)
+#
+#  add_library(solo5net STATIC solo5net.cpp)
+#  add_dependencies(solo5net PrecompiledLibraries)
+#  install(TARGETS solo5net solo5blk DESTINATION includeos/${ARCH}/drivers)
+#endif(WITH_SOLO5)

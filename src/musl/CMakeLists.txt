@@ -1,4 +1,3 @@
-
 set(MUSL_OBJECTS
   futex.cpp close.cpp fcntl.cpp lseek.cpp ioctl.cpp writev.cpp
   write.cpp brk.cpp madvise.cpp mmap.cpp mremap.cpp munmap.cpp
