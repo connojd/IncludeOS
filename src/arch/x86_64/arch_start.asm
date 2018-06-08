@@ -14,6 +14,7 @@
 ; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ; See the License for the specific language governing permissions and
 ; limitations under the License.
+global __start_long_mode:function
 global __arch_start:function
 global __gdt64_base_pointer
 extern kernel_start
@@ -118,11 +119,11 @@ __arch_start:
 
     ;; load 64-bit GDT
     lgdt [__gdt64_base_pointer]
-    jmp  GDT64.Code:long_mode
+    jmp  GDT64.Code:__start_long_mode
 
 
 [BITS 64]
-long_mode:
+__start_long_mode:
     cli
 
     ;; segment regs
