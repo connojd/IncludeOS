@@ -16,6 +16,7 @@
 ; limitations under the License.
 ;
 global __apic_trampoline:function
+global long_mode:function
 extern __gdt64_base_pointer
 extern revenant_main
 
